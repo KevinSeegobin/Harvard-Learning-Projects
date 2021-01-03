@@ -7,9 +7,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 
-model = Perceptron()
+#model = Perceptron()
 # model = svm.SVC()
-# model = KNeighborsClassifier(n_neighbors=1)
+model = KNeighborsClassifier(n_neighbors=3)
 # model = GaussianNB()
 
 # Read data in from file

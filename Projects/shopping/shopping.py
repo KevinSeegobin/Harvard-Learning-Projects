@@ -15,6 +15,7 @@ def main():
 
     # Load data from spreadsheet and split into train and test sets
     evidence, labels = load_data(sys.argv[1])
+
     X_train, X_test, y_train, y_test = train_test_split(
         evidence, labels, test_size=TEST_SIZE
     )
@@ -29,7 +30,6 @@ def main():
     print(f"Incorrect: {(y_test != predictions).sum()}")
     print(f"True Positive Rate: {100 * sensitivity:.2f}%")
     print(f"True Negative Rate: {100 * specificity:.2f}%")
-
 
 def load_data(filename):
     """
@@ -61,11 +61,39 @@ def load_data(filename):
     """
     evidence = []
     labels = []
+    month = ["jan", "feb", "mar", "apr", "may", "june", "jul", "aug", "sep", "oct", "nov", "dec"]
+
     with open(filename) as f:
         reader = csv.DictReader(f)
+        
         for row in reader:
-            labels.append(row.pop("Revenue"))
-            evidence.append([row.values()])
+            if row.pop("Revenue").lower() == "true":
+                labels.append(1)
+            else:
+                labels.append(0)
+
+            templist = list(row.values())
+            templist[0] = int(templist[0])
+            templist[1] = float(templist[1])
+            templist[2] = int(templist[2])
+            templist[3] = float(templist[3])
+            templist[4] = int(templist[4])
+            templist[5] = float(templist[5])
+            for temp in templist[6:10]:
+                templist[templist.index(temp)] = float(temp)
+            templist[10] = month.index(templist[10].lower())
+            for temp in templist[11:15]:
+                templist[templist.index(temp)] = int(temp)
+            if templist[15].lower() == "returning_visitor":
+                templist[15] = 1
+            else:
+                templist[15] = 0
+            if templist[16].lower() == "true":
+                templist[16] = 1
+            else:
+                templist[16] = 0
+
+            evidence.append(templist)
 
     return (evidence, labels)
 
