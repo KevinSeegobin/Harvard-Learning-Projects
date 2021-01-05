@@ -123,13 +123,20 @@ def evaluate(labels, predictions):
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
+    sen = 0
     sensitivity = 0
+    spe = 0
     specificity = 0
-    for lab, pred in zip(labels, predictions):
-        if lab == 1 and pred == 1: sensitivity += 1
-        if lab == 0 and pred == 0: specificity += 1
 
-    return (sensitivity/len(labels), specificity/len(labels))
+    for lab, pred in zip(labels, predictions):
+        if lab == 1:
+            sen += 1
+            if pred == 1: sensitivity += 1
+        if lab == 0:
+            spe += 1 
+            if pred == 0: specificity += 1
+
+    return (sensitivity/sen, specificity/spe)
 
 
 if __name__ == "__main__":
